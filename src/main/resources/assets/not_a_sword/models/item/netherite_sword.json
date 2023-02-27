@@ -1,0 +1,6 @@
+{
+  "parent" : "item/netherite_sword",
+  "overrides": [
+    {"predicate": {"blocking": 1},"model": "not_a_sword:item/netherite_sword_blocking"}
+  ]
+}

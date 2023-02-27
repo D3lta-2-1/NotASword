@@ -1,0 +1,6 @@
+{
+  "parent" : "item/wooden_sword",
+  "overrides": [
+    {"predicate": {"blocking": 1},"model": "not_a_sword:item/wooden_sword_blocking"}
+  ]
+}

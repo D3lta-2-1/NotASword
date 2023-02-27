@@ -1,0 +1,6 @@
+{
+  "parent": "not_a_sword:item/blocking_parent",
+  "textures": {
+    "layer0": "item/stone_sword"
+  }
+}

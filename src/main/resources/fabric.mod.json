@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "not_a_sword",
+  "version": "${version}",
+  "name": "NotASword",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/NotASword/icon.png",
+  "environment": "server",
+  "entrypoints": {
+    "main": [
+      "fr.delta.notasword.NotASword"
+    ],
+    "mm:early_risers": [
+      "fr.delta.notasword.enumAdder.UseActionEnumAdder"
+    ]
+  },
+  "mixins": [
+    "NotASword.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.17",
+    "fabric": "*",
+    "minecraft": "1.19.3"
+  }
+}

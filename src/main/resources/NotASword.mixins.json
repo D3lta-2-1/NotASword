@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "fr.delta.notasword.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "attack_sound.PlayerEntityMixin",
+    "blockhit.LivingEntityMixin",
+    "oldKocback.PlayerEntityMixin",
+    "oldKocback.LivingEntityMixin",
+    "SwordItemMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

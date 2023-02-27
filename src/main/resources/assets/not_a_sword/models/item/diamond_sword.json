@@ -1,0 +1,6 @@
+{
+  "parent" : "item/diamond_sword",
+  "overrides": [
+    {"predicate": {"blocking": 1},"model": "not_a_sword:item/diamond_sword_blocking"}
+  ]
+}
