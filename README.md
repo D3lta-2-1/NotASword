@@ -1,7 +1,7 @@
 # NotASword
 An Plasmid addon that restore the old pvp by deguising shields into swords 
-  
-![showcase](https://imgur.com/uNGWy0y.gif)
+
+https://imgur.com/uNGWy0y
 
  ## using it in a project : 
 Step 1. Add the JitPack repository to your build file 
