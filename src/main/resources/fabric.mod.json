@@ -1,8 +1,9 @@
 {
   "schemaVersion": 1,
-  "id": "not_a_sword",
+
   "version": "${version}",
   "name": "NotASword",
+  "id" : "not_a_sword",
   "description": "",
   "authors": [],
   "contact": {},
