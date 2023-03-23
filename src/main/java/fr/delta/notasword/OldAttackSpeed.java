@@ -9,8 +9,11 @@ import xyz.nucleoid.plasmid.game.event.GamePlayerEvents;
 import java.util.Objects;
 
 public class OldAttackSpeed {
-    public OldAttackSpeed(GameActivity activity)
+
+    final double speed;
+    public OldAttackSpeed(Double speed, GameActivity activity)
     {
+        this.speed = speed;
         activity.listen(GamePlayerEvents.JOIN, this::onPlayerJoin);
         activity.listen(GamePlayerEvents.LEAVE, this::onPlayerLeave);
         activity.listen(GamePlayerEvents.REMOVE, this::onPlayerLeave);
@@ -23,7 +26,7 @@ public class OldAttackSpeed {
     {
         EntityAttributeInstance attackSpeedInstance = player.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_SPEED);
         if (attackSpeedInstance != null) {
-            attackSpeedInstance.setBaseValue(20D);
+            attackSpeedInstance.setBaseValue(speed);
         }
     }
 
