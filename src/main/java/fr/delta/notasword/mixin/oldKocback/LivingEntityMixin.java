@@ -23,7 +23,7 @@ public abstract class LivingEntityMixin {
     public void loadVec3d(double f, double d, double e, CallbackInfo ci, Vec3d vec3d, Vec3d vec3d2)
     {
         var livingEntity = (LivingEntity)(Object)this;
-        var blockHitEntity = (BlockHitEntity)(Object)this;
+        var blockHitEntity = (BlockHitEntity)this;
         var gameSpace = GameSpaceManager.get().byWorld(livingEntity.world);
 
         if (gameSpace != null && gameSpace.getBehavior().testRule(NotASword.OLD_KNOCKBACK) == ActionResult.SUCCESS && !blockHitEntity.isBlockHit())
@@ -33,11 +33,12 @@ public abstract class LivingEntityMixin {
         }
     }
 
+
     @ModifyArg(method = "takeKnockback", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;setVelocity(DDD)V"), index = 1)
     public double changeKnockbackY(double y)
     {
         var livingEntity = (LivingEntity)(Object)this;
-        var blockHitEntity = (BlockHitEntity)(Object)this;
+        var blockHitEntity = (BlockHitEntity)this;
         var gameSpace = GameSpaceManager.get().byWorld(livingEntity.world);
 
         if (gameSpace != null && gameSpace.getBehavior().testRule(NotASword.OLD_KNOCKBACK) == ActionResult.SUCCESS && !blockHitEntity.isBlockHit())

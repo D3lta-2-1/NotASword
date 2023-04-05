@@ -1,7 +1,6 @@
 package fr.delta.notasword.item;
 
 import eu.pb4.polymer.core.api.item.PolymerItem;
-import fr.delta.notasword.NotASword;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -40,9 +39,11 @@ public class OldSword extends SwordItem implements PolymerItem {
         user.setCurrentHand(hand);
         return TypedActionResult.consume(itemStack);
     }
+
     @Override
     public UseAction getUseAction(ItemStack stack) {
-        //block mecanics from the shield
-        return NotASword.BLOCk_HIT_ACTION;
+        //block mechanics from the shield
+        return UseAction.BLOCK;
+        //return NotASword.BLOCk_HIT_ACTION;
     }
 }

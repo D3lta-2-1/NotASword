@@ -14,6 +14,7 @@ public class NotASword implements ModInitializer {
     public static UseAction BLOCk_HIT_ACTION;
     public static final GameRuleType ATTACK_SOUND = GameRuleType.create();
     public static final GameRuleType OLD_KNOCKBACK = GameRuleType.create();
+    public static final GameRuleType FAST_ATTACK = GameRuleType.create();
     @Override
     public void onInitialize() {
         BLOCk_HIT_ACTION = ClassTinkerers.getEnum(UseAction.class, "BLOCK_HIT");
