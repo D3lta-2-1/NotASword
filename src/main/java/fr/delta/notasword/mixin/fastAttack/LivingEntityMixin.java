@@ -24,7 +24,7 @@ public abstract class LivingEntityMixin extends Entity {
         if(gameSpace != null && gameSpace.getBehavior().testRule(NotASword.FAST_ATTACK) == ActionResult.SUCCESS)
         {
             if (source.getAttacker() instanceof LivingEntity)
-                return original - 2; // 0.9s
+                return original - 1; // 0.9s
         }
         return original;
     }

@@ -55,7 +55,7 @@ public abstract class LivingEntityMixin extends Entity {
             attacker.setSprinting(false);
 
             if(((BlockHitEntity)this).isBlockHit())
-                strength *= 0.65;
+                strength *= 0.75;
 
             vector = vector.multiply(strength * (1.0 - this.getAttributeValue(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE))); //strength of the hit
 
