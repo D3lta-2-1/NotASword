@@ -10,17 +10,16 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-public class OldSword extends SwordItem implements PolymerItem {
-
-    public OldSword(ToolMaterial toolMaterial, int attackDamage, Settings settings, Item vanillaMItem, int customModelData)
-    {
-        super(toolMaterial, attackDamage, -1, settings);
-        this.vanillaItem = vanillaMItem;
-        this.customModelData = customModelData;
-    }
+public class OldSwordItem extends SwordItem implements PolymerItem {
 
     final Item vanillaItem;
     final int customModelData;
+
+    public OldSwordItem(ToolMaterial toolMaterial, int attackDamage, Settings settings, Item vanillaItem, int customModelData) {
+        super(toolMaterial, attackDamage, -1, settings);
+        this.vanillaItem = vanillaItem;
+        this.customModelData = customModelData;
+    }
 
     @Override
     public Item getPolymerItem(ItemStack itemStack, @Nullable ServerPlayerEntity player) {

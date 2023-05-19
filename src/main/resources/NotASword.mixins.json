@@ -9,7 +9,8 @@
     "blockhit.LivingEntityMixin",
     "fastAttack.LivingEntityMixin",
     "oldKocback.LivingEntityMixin",
-    "oldKocback.PlayerEntityMixin"
+    "oldKocback.PlayerEntityMixin",
+    "sweepingEdge.PlayerEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+
+  "version": "${version}",
+  "name": "TestMod",
+  "id" : "testmod",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/NotASword/icon.png",
+  "environment": "server",
+  "entrypoints": {
+    "server": [
+      "fr.delta.testmod.TestMod"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.14.18",
+    "fabric": "*",
+    "minecraft": "1.19.4"
+  }
+}

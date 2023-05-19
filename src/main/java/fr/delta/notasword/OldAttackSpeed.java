@@ -10,19 +10,14 @@ import java.util.Objects;
 
 public class OldAttackSpeed {
 
-    final double speed;
-    public OldAttackSpeed(Double speed, GameActivity activity)
+    public static void add(Double speed, GameActivity activity)
     {
-        this.speed = speed;
-        activity.listen(GamePlayerEvents.JOIN, this::onPlayerJoin);
-        activity.listen(GamePlayerEvents.LEAVE, this::onPlayerLeave);
-        activity.listen(GamePlayerEvents.REMOVE, this::onPlayerLeave);
-        var players = activity.getGameSpace().getPlayers();
-        for(var player : players)
-            onPlayerJoin(player);
+        activity.listen(GamePlayerEvents.ADD, (player) -> onPlayerJoin(player, speed));
+        activity.listen(GamePlayerEvents.LEAVE, OldAttackSpeed::onPlayerLeave);
+        activity.listen(GamePlayerEvents.REMOVE, OldAttackSpeed::onPlayerLeave);
     }
 
-    private void onPlayerJoin(ServerPlayerEntity player)
+    static private void onPlayerJoin(ServerPlayerEntity player, double speed)
     {
         EntityAttributeInstance attackSpeedInstance = player.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_SPEED);
         if (attackSpeedInstance != null) {
@@ -30,7 +25,7 @@ public class OldAttackSpeed {
         }
     }
 
-    private void onPlayerLeave(ServerPlayerEntity player)
+    static private void onPlayerLeave(ServerPlayerEntity player)
     {
         if (player.getAttributes().hasAttribute(EntityAttributes.GENERIC_ATTACK_SPEED) && player.getAttributes().getBaseValue(EntityAttributes.GENERIC_ATTACK_SPEED) == 20D) {
             Objects.requireNonNull(player.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_SPEED)).setBaseValue(4D);

@@ -6,6 +6,24 @@ plugins {
 version = project.mod_version
 group = project.maven_group
 
+sourceSets {
+    testmod {
+        compileClasspath += main.compileClasspath
+        runtimeClasspath += main.runtimeClasspath
+    }
+}
+
+loom {
+    runs {
+        testmodServer {
+            server()
+            ideConfigGenerated project.rootProject == project
+            name = "Testmod Server"
+            source sourceSets.testmod
+        }
+    }
+}
+
 repositories {
     maven { url = 'https://maven.nucleoid.xyz/' }
     maven { url = 'https://jitpack.io/' }
@@ -24,9 +42,13 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
     modImplementation include("eu.pb4:polymer-resource-pack:${project.polymer_resource_pack}")
     modImplementation "xyz.nucleoid:plasmid:${project.plasmid}"
+    implementation("com.github.LlamaLad7:MixinExtras:0.1.1")
+    annotationProcessor("com.github.LlamaLad7:MixinExtras:0.1.1")
     //asm-fabric
     modImplementation"com.github.Chocohead:Fabric-ASM:${project.fabric_asm}"
     include "com.github.Chocohead:Fabric-ASM:${project.fabric_asm}"
+
+    testmodImplementation sourceSets.main.output
 }
 
 processResources {
