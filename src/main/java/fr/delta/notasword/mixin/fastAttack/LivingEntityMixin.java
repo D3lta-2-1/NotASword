@@ -20,7 +20,7 @@ public abstract class LivingEntityMixin extends Entity {
     @ModifyConstant(method = "damage", constant = @Constant(intValue = 20, ordinal = 0))
     private int modifyHitCoolDown(int original, DamageSource source, float amount)
     {
-        var gameSpace = GameSpaceManager.get().byWorld((this).world);
+        var gameSpace = GameSpaceManager.get().byWorld((this).getWorld());
         if(gameSpace != null && gameSpace.getBehavior().testRule(NotASword.FAST_ATTACK) == ActionResult.SUCCESS)
         {
             if (source.getAttacker() instanceof LivingEntity)

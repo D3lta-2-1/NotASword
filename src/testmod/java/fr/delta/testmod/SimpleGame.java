@@ -23,9 +23,8 @@ import xyz.nucleoid.plasmid.game.world.generator.TemplateChunkGenerator;
 import xyz.nucleoid.plasmid.util.Scheduler;
 
 public class SimpleGame implements AutoCloseable {
-
     private boolean isRunning = true;
-    public static GameOpenProcedure open(GameOpenContext<?> context)
+    public static GameOpenProcedure open(GameOpenContext<SimpleConfig> context)
     {
         MapTemplate template = MapTemplate.createEmpty();
         for(int x = -16; x <= 16; x++)
@@ -44,10 +43,10 @@ public class SimpleGame implements AutoCloseable {
                 .setGenerator(generator)
                 .setTimeOfDay(6000);
 
-        return context.openWithWorld(worldConfig, (activity, world) ->  new SimpleGame(world, activity));
+        return context.openWithWorld(worldConfig, (activity, world) ->  new SimpleGame(world, context.config(), activity));
     }
 
-    SimpleGame(ServerWorld world, GameActivity activity)
+    SimpleGame(ServerWorld world, SimpleConfig config, GameActivity activity)
     {
         activity.listen(GamePlayerEvents.OFFER, offer -> offer.accept(world, new Vec3d(0.5, 65, 0.5))
                 .and(() ->{
@@ -68,11 +67,13 @@ public class SimpleGame implements AutoCloseable {
         activity.deny(GameRuleType.PORTALS);
         activity.addResource(this);
 
-        Scheduler.INSTANCE.repeatWhile((server) -> {
-            var entity = new HuskEntity(EntityType.HUSK, world);
-            entity.setPosition(0, 65, 0);
-            world.spawnEntity(entity);
-        }, this::isRunning, 50, 100);
+        if(config.zombieSpawn()) {
+            Scheduler.INSTANCE.repeatWhile((server) -> {
+                var entity = new HuskEntity(EntityType.HUSK, world);
+                entity.setPosition(0, 65, 0);
+                world.spawnEntity(entity);
+            }, this::isRunning, 50, 100);
+        }
     }
 
     private boolean isRunning(int i) {

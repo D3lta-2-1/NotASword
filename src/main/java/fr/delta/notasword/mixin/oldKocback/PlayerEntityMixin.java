@@ -21,7 +21,7 @@ public abstract class PlayerEntityMixin extends LivingEntity
     @ModifyVariable(method = "attack", name = "i", at = @At(value = "LOAD", ordinal = 0), ordinal = 0)
     public int level(int i, Entity target)
     {
-        var gameSpace = GameSpaceManager.get().byWorld(world);
+        var gameSpace = GameSpaceManager.get().byWorld(this.getWorld());
         return gameSpace != null && gameSpace.getBehavior().testRule(NotASword.OLD_KNOCKBACK) == ActionResult.SUCCESS ? Integer.MIN_VALUE : 0;
     }
 }

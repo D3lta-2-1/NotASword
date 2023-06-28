@@ -10,7 +10,9 @@ import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageTypes;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -34,36 +36,40 @@ public abstract class LivingEntityMixin extends Entity {
     void takeKnockback(LivingEntity entity, double strength_, double x_, double y_, DamageSource source, float amount)
     {
         var attacker = source.getAttacker();
-        var gameSpace = GameSpaceManager.get().byWorld(world);
+        var gameSpace = GameSpaceManager.get().byWorld(this.getWorld());
         var livingAttacker = attacker instanceof LivingEntity ? (LivingEntity)attacker : null;
         if((source.isOf(DamageTypes.PLAYER_ATTACK) || source.isOf(DamageTypes.MOB_ATTACK)) && livingAttacker != null && gameSpace != null && gameSpace.getBehavior().testRule(NotASword.OLD_KNOCKBACK) == ActionResult.SUCCESS)
         {
+            //get data
             var knockback = EnchantmentHelper.getKnockback(livingAttacker);
             var yaw = livingAttacker.getYaw();
-            var pitch = -livingAttacker.getPitch();
-            pitch = pitch < 30 && this.isOnGround() ? 30 : pitch; //if the player is on the ground, the pitch is set to 35
+            double pitch = -livingAttacker.getPitch();
 
-            var vector = getVector(pitch, yaw);
+            //bound the pitch
+            //pitch = pitch > 0 ? Math.sqrt(pitch/90)* 0.8 * pitch : pitch; //pass it to a square root function if above 0 to make it more realistic
+            pitch = pitch < 30 && this.isOnGround() ? 25 : pitch; //if the receiver is on the ground, the pitch is set to 35
 
-            double strength = 0.7 //base strength
-                    + knockback / 3D //+ 0.33 per level of knockback
-                    + amount * 0.01; //+ 0.01 per damage point
+            double strength = 0.3 //base strength
+                    + (3 - distanceTo(attacker)) * 0.4 //closer the attacker is, the stronger the hit, max 1.5
+                    + knockback * 0.2//+ 0.2 per level of knockback
+                    + amount * 0.02; //+ 0.02 per damage point
 
-            var velocity = livingAttacker.getVelocity().length() * 0.6;
-            strength += velocity > 1 ? 1 : velocity; //typical sprinting speed is 0.04
+            //use the velocity of the attacker to increase the strength of the hit
+            var velocity = livingAttacker.getVelocity().length() * 0.5;
+            strength += Math.min(velocity, 1); //restrict it to 1 max
 
             attacker.setSprinting(false);
 
-            if(((BlockHitEntity)this).isBlockHit())
-                strength *= 0.75;
-
+            //todo: add some randomness to the yaw
+            var vector = getUnitVector(pitch, yaw);
             vector = vector.multiply(strength * (1.0 - this.getAttributeValue(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE))); //strength of the hit
 
-            /*attacker.sendMessage(Text.literal("speed : " + attacker.getVelocity().length()).formatted(Formatting.AQUA));
-            attacker.sendMessage(Text.literal("knockback : " + strength).formatted(Formatting.GREEN));
-            this.sendMessage(Text.literal("knockback : " + strength).formatted(Formatting.RED));*/
+            if(((BlockHitEntity)this).isBlockHit())
+                vector.multiply(0.9); //if the player is parrying, the knockback is reduced by 10%
 
-            vector = vector.multiply(1, 0.8, 1);
+            attacker.sendMessage(Text.literal("speed : " + attacker.getVelocity().length()).formatted(Formatting.AQUA));
+            attacker.sendMessage(Text.literal("knockback : " + strength).formatted(Formatting.GREEN));
+            this.sendMessage(Text.literal("knockback : " + strength).formatted(Formatting.RED));
 
             this.velocityDirty = true;
             this.addVelocity(vector);
@@ -74,7 +80,7 @@ public abstract class LivingEntityMixin extends Entity {
         }
     }
 
-    private static Vec3d getVector(float pitch, float yaw)
+    private static Vec3d getUnitVector(double pitch, double yaw)
     {
         double pitchRad = Math.toRadians(pitch);
         double yawRad = Math.toRadians(yaw);

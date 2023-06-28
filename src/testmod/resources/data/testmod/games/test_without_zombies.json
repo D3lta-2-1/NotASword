@@ -1,4 +1,4 @@
 {
   "type": "testmod:testmod",
-  "spawnZombies" : true
+  "spawnZombies" : false
 }

@@ -2,35 +2,39 @@ package fr.delta.notasword.item;
 
 import eu.pb4.polymer.core.api.item.PolymerItemGroupUtils;
 import eu.pb4.polymer.resourcepack.api.PolymerResourcePackUtils;
+import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 import static fr.delta.notasword.NotASword.MOD_ID;
 
 public class OldSwords {
-    public static SwordItem WOODEN_SWORD = create(Items.WOODEN_SWORD, "item/wooden_sword");
-    public static SwordItem GOLDEN_SWORD = create(Items.GOLDEN_SWORD, "item/golden_sword");
-    public static SwordItem STONE_SWORD = create(Items.STONE_SWORD, "item/stone_sword");
-    public static SwordItem IRON_SWORD = create(Items.IRON_SWORD, "item/iron_sword");
-    public static SwordItem DIAMOND_SWORD = create(Items.DIAMOND_SWORD, "item/diamond_sword");
-    public static SwordItem NETHERITE_SWORD = create(Items.NETHERITE_SWORD, "item/netherite_sword");
+    public static SwordItem WOODEN_SWORD = create(Items.WOODEN_SWORD, new FabricItemSettings(), "item/wooden_sword");
+    public static SwordItem GOLDEN_SWORD = create(Items.GOLDEN_SWORD, new FabricItemSettings(), "item/golden_sword");
+    public static SwordItem STONE_SWORD = create(Items.STONE_SWORD, new FabricItemSettings(), "item/stone_sword");
+    public static SwordItem IRON_SWORD = create(Items.IRON_SWORD, new FabricItemSettings(), "item/iron_sword");
+    public static SwordItem DIAMOND_SWORD = create(Items.DIAMOND_SWORD, new FabricItemSettings(), "item/diamond_sword");
+    public static SwordItem NETHERITE_SWORD = create(Items.NETHERITE_SWORD, new FabricItemSettings().fireproof(), "item/netherite_sword");
 
 
-    private static SwordItem create(Item item, String modelPath)
+    private static SwordItem create(Item item, Item.Settings settings, String modelPath)
     {
         assert item instanceof SwordItem;
         var toolMaterial = ((SwordItem) item).getMaterial();
-        return new OldSwordItem(toolMaterial, 3, new Item.Settings(), item, PolymerResourcePackUtils.requestModel(Items.SHIELD, new Identifier(MOD_ID, modelPath)).value());
+        return new OldSwordItem(toolMaterial, 3, settings, item, PolymerResourcePackUtils.requestModel(Items.SHIELD, new Identifier(MOD_ID, modelPath)).value());
     }
 
-    public static final ItemGroup ITEM_GROUP = PolymerItemGroupUtils.builder(new Identifier(MOD_ID, "old_swords"))
-            .icon(DIAMOND_SWORD::getDefaultStack)
-            .displayName(Text.translatable("category.not_a_sword.title"))
-            .build();
+    static final Identifier GROUP_ID = new Identifier(MOD_ID, "old_swords");
+
+    public static final RegistryKey<ItemGroup> ITEM_GROUP = RegistryKey.of(RegistryKeys.ITEM_GROUP, GROUP_ID);
+
 
     private static void registerItem(String name, Item item)
     {
@@ -45,6 +49,11 @@ public class OldSwords {
         registerItem("iron_sword", IRON_SWORD);
         registerItem("diamond_sword", DIAMOND_SWORD);
         registerItem("netherite_sword", NETHERITE_SWORD);
+
+        PolymerItemGroupUtils.registerPolymerItemGroup(GROUP_ID, FabricItemGroup.builder()
+                .icon(DIAMOND_SWORD::getDefaultStack)
+                .displayName(Text.translatable("category.not_a_sword.title"))
+                .build());
 
         ItemGroupEvents.modifyEntriesEvent(ITEM_GROUP).register(content -> {
             content.add(WOODEN_SWORD);
